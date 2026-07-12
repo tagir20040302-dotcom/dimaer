@@ -703,13 +703,13 @@ a.case-card:focus-visible .case-image {
 
 @media (max-width: 520px) {
   :root {
-    --page-width: 280px;
-    --content-width: 280px;
-    --card-width: 280px;
+    --page-width: calc(100vw - 40px);
+    --content-width: var(--page-width);
+    --card-width: var(--page-width);
   }
 
   .page-shell {
-    width: 280px;
+    width: var(--page-width);
     margin-top: 0;
     gap: 100px;
   }
