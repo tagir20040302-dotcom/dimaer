@@ -720,13 +720,14 @@ a.case-card:focus-visible .case-image {
     align-items: flex-start;
     gap: 40px;
     width: 100vw;
-    padding: 28px 20px;
+    padding: 28px max(20px, calc((100vw - var(--page-width)) / 2));
   }
 
   .hero-content {
     width: 100%;
     display: flex;
     flex-direction: column;
+    gap: 40px;
     align-items: flex-start;
   }
 
@@ -746,11 +747,16 @@ a.case-card:focus-visible .case-image {
 
   .hero-main {
     width: 100%;
-    min-height: 148px;
+    min-height: 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap: 0;
+    justify-content: flex-start;
+    gap: 32px;
+  }
+
+  .hero-actions {
+    width: 100%;
+    row-gap: 16px;
   }
 
   .hero-main::before {
