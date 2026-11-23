@@ -38,6 +38,61 @@
     if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) dialog.close();
   });
 
+  const share = document.querySelector('.case-share');
+  const shareUrl = new URL(document.querySelector('link[rel="canonical"]').href).href;
+  const shareText = 'Fluento — онлайн-платформа по изучению английского языка. Кейс Алсу Тагировой.';
+  const shareStatus = share.querySelector('[data-share-status]');
+  const copyLabel = share.querySelector('[data-copy-share-label]');
+  const urlLink = share.querySelector('[data-share-url]');
+  urlLink.href = shareUrl;
+  urlLink.textContent = shareUrl;
+  const telegramUrl = new URL('https://t.me/share/url');
+  telegramUrl.search = new URLSearchParams({url: shareUrl, text: shareText});
+  share.querySelector('[data-share-telegram]').href = telegramUrl.href;
+  const whatsappUrl = new URL('https://wa.me/');
+  whatsappUrl.search = new URLSearchParams({text: `${shareText}\n${shareUrl}`});
+  share.querySelector('[data-share-whatsapp]').href = whatsappUrl.href;
+  share.querySelector('[data-share-mail]').href = `mailto:?subject=${encodeURIComponent('Fluento — проект Алсу Тагировой')}&body=${encodeURIComponent(`${shareText}\n\n${shareUrl}`)}`;
+
+  document.querySelector('[data-open-share]').addEventListener('click', () => {
+    shareStatus.textContent = '';
+    copyLabel.textContent = 'Копировать ссылку';
+    share.showModal();
+    share.scrollTop = 0;
+  });
+  share.querySelector('[data-close-share]').addEventListener('click', () => share.close());
+  share.addEventListener('click', event => {
+    if (event.target !== share) return;
+    const rect = share.getBoundingClientRect();
+    if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) share.close();
+  });
+
+  const copyShareUrl = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      copyLabel.textContent = 'Ссылка скопирована';
+      shareStatus.textContent = 'Ссылка скопирована';
+      return true;
+    } catch {
+      shareStatus.textContent = 'Не удалось скопировать ссылку';
+      return false;
+    }
+  };
+  share.querySelector('[data-copy-share]').addEventListener('click', copyShareUrl);
+  share.querySelector('[data-share-instagram]').addEventListener('click', async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({title: 'Fluento — кейс Алсу Тагировой', text: shareText, url: shareUrl});
+      } catch (error) {
+        if (error.name !== 'AbortError') await copyShareUrl();
+      }
+      return;
+    }
+    const copied = copyShareUrl();
+    window.open('https://www.instagram.com/direct/inbox/', '_blank', 'noopener,noreferrer');
+    await copied;
+  });
+
   if (film.dataset.videoSrc) {
     const video = document.createElement('video');
     video.controls = true;

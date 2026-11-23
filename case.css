@@ -69,6 +69,7 @@
 }
 
 .case-icon img { width: 20px; height: 20px; }
+.case-icon img.case-share-symbol { width: 100%; height: 100%; object-fit: contain; }
 .case-icon:hover { background: #edf0ff; }
 .project-page :focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 .case-header :focus-visible { outline-color: #fff; }
@@ -134,7 +135,9 @@
 .case-behance:hover { color: var(--blue); background: #fff; }
 
 .case-footer { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; margin-top: 100px; padding-bottom: 20px; }
-.case-footer > h2 { font-size: 24px; font-weight: 500; text-transform: uppercase; }
+.case-footer-heading h2 { font-size: 24px; font-weight: 500; text-transform: uppercase; }
+.case-back-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 24px; font-size: 14px; text-underline-offset: 3px; }
+.case-back-link img { width: 18px; height: 18px; }
 .case-contact-panel { grid-column: 3 / 5; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; padding: 20px; background: var(--panel); font-style: normal; }
 .case-contact-panel > div { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; min-width: 0; }
 .case-contact-panel a { max-width: 100%; overflow-wrap: anywhere; font-size: 16px; line-height: 1.4; text-underline-offset: 3px; }
@@ -148,7 +151,43 @@
 .case-lightbox-bar h2 { font-size: 18px; line-height: 1.3; font-weight: 400; }
 .case-lightbox-bar .case-icon { flex: 0 0 40px; background: var(--panel); }
 .case-lightbox-image { width: 100%; height: auto; }
-html:has(.case-lightbox[open]) { overflow: hidden; }
+html:has(.case-lightbox[open], .case-share[open]) { overflow: hidden; }
+
+.case-share { width: 493px; max-width: calc(100vw - 32px); max-height: 92svh; margin: auto; padding: 16px; border: 0; border-radius: 0; background: #fff; color: var(--blue); overscroll-behavior: contain; }
+.case-share::backdrop { background: rgb(0 0 0 / 64%); backdrop-filter: blur(5px); }
+.case-share-topbar { position: sticky; top: -16px; z-index: 2; display: flex; justify-content: flex-end; padding-bottom: 16px; background: #fff; }
+.case-share-close { display: grid; place-items: center; width: 32px; height: 32px; padding: 0; border: 0; background: #fff; color: var(--blue); cursor: pointer; }
+.case-share-close span { display: block; width: 28px; height: 28px; background: currentColor; mask: url('data:image/svg+xml;base64,PCEtLSBAbGljZW5zZSBsdWNpZGUtc3RhdGljIHYwLjQ2OC4wIC0gSVNDIC0tPgo8c3ZnCiAgY2xhc3M9Imx1Y2lkZSBsdWNpZGUteCIKICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgd2lkdGg9IjI0IgogIGhlaWdodD0iMjQiCiAgdmlld0JveD0iMCAwIDI0IDI0IgogIGZpbGw9Im5vbmUiCiAgc3Ryb2tlPSJjdXJyZW50Q29sb3IiCiAgc3Ryb2tlLXdpZHRoPSIyIgogIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIKICBzdHJva2UtbGluZWpvaW49InJvdW5kIgo+CiAgPHBhdGggZD0iTTE4IDYgNiAxOCIgLz4KICA8cGF0aCBkPSJtNiA2IDEyIDEyIiAvPgo8L3N2Zz4K') center / contain no-repeat; }
+.case-share-url { display: block; padding: 3px 2px; background: var(--blue); color: #fff; font-size: 13px; line-height: 1.25; overflow-wrap: anywhere; text-underline-offset: 3px; }
+.case-share-preview { width: 100%; height: auto; aspect-ratio: 461 / 220; object-fit: cover; }
+.case-share-meta { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 12px; font-size: 16px; font-weight: 500; line-height: 1.3; }
+.case-share-meta span:last-child { color: #4356d9; }
+.case-share h2 { margin: 32px 0 16px; font-size: 30px; font-weight: 500; line-height: 1.05; text-transform: uppercase; }
+.case-share-description { font-size: 16px; line-height: 1.3; }
+.case-share-channels { margin-top: 32px; }
+.case-share-channels h3 { font-size: 20px; line-height: 1.3; font-weight: 400; margin-bottom: 24px; }
+.case-share-options { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.case-share-options a, .case-share-options button { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 10px; min-width: 0; margin: 0; padding: 8px 0; border: 0; background: none; color: inherit; font: inherit; font-size: 12px; line-height: 1.4; text-decoration: none; cursor: pointer; }
+.case-share-options img { width: 40px; height: 40px; object-fit: contain; }
+.case-share-options a:hover, .case-share-options button:hover { text-decoration: underline; text-underline-offset: 3px; }
+.case-share-copy { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; min-height: 60px; margin-top: 40px; padding: 12px; border: 2px solid var(--blue); background: var(--blue); color: #fff; font: inherit; font-size: 22px; line-height: 1.3; cursor: pointer; }
+.case-share-copy > span:first-child { display: block; flex: 0 0 24px; width: 24px; height: 24px; background: currentColor; mask: url('data:image/svg+xml;base64,PCEtLSBAbGljZW5zZSBsdWNpZGUtc3RhdGljIHYwLjQ2OC4wIC0gSVNDIC0tPgo8c3ZnCiAgY2xhc3M9Imx1Y2lkZSBsdWNpZGUtbGluayIKICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgd2lkdGg9IjI0IgogIGhlaWdodD0iMjQiCiAgdmlld0JveD0iMCAwIDI0IDI0IgogIGZpbGw9Im5vbmUiCiAgc3Ryb2tlPSJjdXJyZW50Q29sb3IiCiAgc3Ryb2tlLXdpZHRoPSIyIgogIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIKICBzdHJva2UtbGluZWpvaW49InJvdW5kIgo+CiAgPHBhdGggZD0iTTEwIDEzYTUgNSAwIDAgMCA3LjU0LjU0bDMtM2E1IDUgMCAwIDAtNy4wNy03LjA3bC0xLjcyIDEuNzEiIC8+CiAgPHBhdGggZD0iTTE0IDExYTUgNSAwIDAgMC03LjU0LS41NGwtMyAzYTUgNSAwIDAgMCA3LjA3IDcuMDdsMS43MS0xLjcxIiAvPgo8L3N2Zz4K') center / contain no-repeat; }
+.case-share-copy:hover { background: #fff; color: var(--blue); }
+.case-share-status { margin: 0; font-size: 13px; line-height: 1.4; }
+.case-share-status:not(:empty) { margin-top: 12px; }
+
+@media (max-width: 520px) {
+  .case-share { padding: 12px; }
+  .case-share-topbar { top: -12px; padding-bottom: 12px; }
+  .case-share h2 { font-size: 24px; margin-top: 24px; }
+  .case-share-url { font-size: 11px; }
+  .case-share-meta, .case-share-description { font-size: 13px; }
+  .case-share-channels { margin-top: 24px; }
+  .case-share-channels h3 { font-size: 18px; margin-bottom: 16px; }
+  .case-share-options { gap: 4px; }
+  .case-share-options a, .case-share-options button { font-size: 10px; }
+  .case-share-copy { margin-top: 24px; font-size: 17px; min-height: 54px; }
+}
 
 @media (min-width: 1800px) {
   .case-intro { max-width: 29ch; }

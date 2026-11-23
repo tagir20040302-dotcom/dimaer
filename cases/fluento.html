@@ -19,8 +19,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500&family=Manrope:wght@400;600&family=Oswald:wght@600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="../styles.css" />
-    <link rel="stylesheet" href="../case.css" />
-    <script src="../case.js" defer></script>
+    <link rel="stylesheet" href="../case.css?v=2" />
+    <script src="../case.js?v=2" defer></script>
   </head>
   <body class="project-page">
     <header class="case-header">
@@ -31,9 +31,9 @@
         <p>Многостраничный сайт · UX/UI Design<br />· Responsive Web Design</p>
       </div>
       <nav class="case-navigation" aria-label="Навигация по кейсу">
-        <a class="case-icon" href="../index.html#cases" aria-label="Вернуться к кейсам" title="Вернуться к кейсам">
-          <img src="../assets/icons/arrow-left.svg" alt="" width="20" height="20" />
-        </a>
+        <button class="case-icon" type="button" data-open-share aria-label="Поделиться проектом" title="Поделиться проектом" aria-haspopup="dialog" aria-controls="case-share">
+          <img class="case-share-symbol" src="../assets/icons/share-project.png" alt="" width="40" height="40" />
+        </button>
         <a class="case-icon" href="https://t.me/dimaer_a" target="_blank" rel="noopener noreferrer" aria-label="Связаться в Telegram" title="Связаться в Telegram">
           <img src="../assets/icons/message-circle.svg" alt="" width="20" height="20" />
         </a>
@@ -146,7 +146,10 @@
       </div>
 
       <footer class="case-footer" aria-labelledby="case-contacts-title">
-        <h2 id="case-contacts-title">Контакты</h2>
+        <div class="case-footer-heading">
+          <h2 id="case-contacts-title">Контакты</h2>
+          <a class="case-back-link" href="../index.html#cases" aria-label="Вернуться к кейсам"><img src="../assets/icons/arrow-left.svg" alt="" width="18" height="18" />Все кейсы</a>
+        </div>
         <address class="case-contact-panel">
           <div>
             <button class="case-copy-phone" type="button" data-copy-phone="+79874203014" aria-label="Скопировать номер телефона">+7(987)-420-30-14</button>
@@ -161,6 +164,28 @@
         </address>
       </footer>
     </main>
+
+    <dialog class="case-share" id="case-share" aria-labelledby="case-share-title" aria-describedby="case-share-description">
+      <div class="case-share-topbar">
+        <button class="case-share-close" type="button" data-close-share aria-label="Закрыть окно «Поделиться»" title="Закрыть окно" autofocus><span aria-hidden="true"></span></button>
+      </div>
+      <a class="case-share-url" data-share-url href="https://www.dimaer.ru/cases/fluento.html">https://www.dimaer.ru/cases/fluento.html</a>
+      <img class="case-share-preview" src="../assets/fluento/walkthrough-poster.webp" alt="Превью проекта Fluento" width="930" height="508" loading="lazy" />
+      <p class="case-share-meta"><span>Fluento</span><span>Веб-дизайн · UI/UX</span></p>
+      <h2 id="case-share-title">Хотите поделиться<br />моим проектом?</h2>
+      <p class="case-share-description" id="case-share-description">Отправьте его друзьям или поделитесь с&nbsp;теми, кому он&nbsp;может быть интересен.</p>
+      <div class="case-share-channels">
+        <h3>Поделиться через</h3>
+        <div class="case-share-options">
+          <a data-share-telegram href="https://t.me/share/url?url=https%3A%2F%2Fwww.dimaer.ru%2Fcases%2Ffluento.html" target="_blank" rel="noopener noreferrer" aria-label="Поделиться проектом в Telegram"><img src="../assets/icons/telegram.png" alt="" width="40" height="40" />Telegram</a>
+          <button data-share-instagram type="button" aria-label="Поделиться проектом в Instagram"><img src="../assets/icons/instagram.png" alt="" width="40" height="40" />Instagram</button>
+          <a data-share-whatsapp href="https://wa.me/?text=https%3A%2F%2Fwww.dimaer.ru%2Fcases%2Ffluento.html" target="_blank" rel="noopener noreferrer" aria-label="Поделиться проектом в WhatsApp"><img src="../assets/icons/whatsapp.png" alt="" width="40" height="40" />WhatsApp</a>
+          <a data-share-mail href="mailto:?subject=Fluento&amp;body=https%3A%2F%2Fwww.dimaer.ru%2Fcases%2Ffluento.html" aria-label="Поделиться проектом по почте"><img src="../assets/icons/mail.png" alt="" width="40" height="40" />Почта</a>
+        </div>
+      </div>
+      <button class="case-share-copy" type="button" data-copy-share><span aria-hidden="true"></span><span data-copy-share-label>Копировать ссылку</span></button>
+      <p class="case-share-status" data-share-status role="status"></p>
+    </dialog>
 
     <dialog class="case-lightbox" aria-labelledby="case-image-title">
       <div class="case-lightbox-bar">
