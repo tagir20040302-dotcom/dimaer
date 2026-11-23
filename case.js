@@ -73,7 +73,7 @@
     try {
       await navigator.clipboard.writeText(shareUrl);
       copyLabel.textContent = 'Ссылка скопирована';
-      shareStatus.textContent = 'Ссылка скопирована';
+      shareStatus.textContent = '';
       return true;
     } catch {
       shareStatus.textContent = 'Не удалось скопировать ссылку';
