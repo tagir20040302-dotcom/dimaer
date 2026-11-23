@@ -1,10 +1,5 @@
-.project-page {
-  --case-header-height: 220px;
-}
-
 .case-header {
-  position: sticky;
-  top: 0;
+  position: relative;
   z-index: 10;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -29,7 +24,7 @@
 
 .case-heading {
   grid-column: 3 / 5;
-  padding-right: 100px;
+  padding-right: 144px;
 }
 
 .case-heading h1 {
@@ -85,8 +80,8 @@
 
 .case-gallery {
   position: sticky;
-  top: calc(var(--case-header-height) + 24px);
-  max-height: calc(100svh - var(--case-header-height) - 48px);
+  top: 24px;
+  max-height: calc(100svh - 48px);
   overflow-y: auto;
   overscroll-behavior-y: auto;
   scrollbar-width: thin;
@@ -196,7 +191,7 @@ html:has(.case-lightbox[open], .case-share[open]) { overflow: hidden; }
 
 @media (max-width: 1280px) {
   .case-header { padding-block: 28px; }
-  .case-heading { padding-right: 88px; }
+  .case-heading { padding-right: 132px; }
   .case-heading h1 { font-size: 28px; }
   .case-cover { width: 112px; height: 132px; }
   .case-navigation { top: 28px; }
@@ -211,7 +206,7 @@ html:has(.case-lightbox[open], .case-share[open]) { overflow: hidden; }
 @media (max-width: 900px) {
   .case-header { grid-template-columns: 80px minmax(0, 1fr); gap: 12px 20px; padding: 20px; }
   .case-cover { grid-row: 1 / 3; width: 80px; height: 94px; }
-  .case-heading { grid-column: 2; grid-row: 1; padding-right: 88px; }
+  .case-heading { grid-column: 2; grid-row: 1; padding-right: 132px; }
   .case-heading h1 { font-size: 24px; margin-bottom: 8px; }
   .case-heading h1 br { display: none; }
   .case-heading > p { font-size: 12px; }
@@ -229,7 +224,7 @@ html:has(.case-lightbox[open], .case-share[open]) { overflow: hidden; }
 }
 
 @media (max-width: 520px) {
-  .case-header { grid-template-columns: 44px minmax(0, 1fr) 68px; gap: 10px 12px; padding: 16px 20px; }
+  .case-header { grid-template-columns: 44px minmax(0, 1fr) 104px; gap: 10px 12px; padding: 16px 20px; }
   .case-cover { width: 44px; height: 52px; grid-row: 1; }
   .case-heading { grid-column: 1 / 4; grid-row: 2; padding-right: 0; }
   .case-heading h1 { font-size: 18px; line-height: 1.15; }

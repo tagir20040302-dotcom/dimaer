@@ -1,12 +1,10 @@
 (() => {
-  const header = document.querySelector('.case-header');
   const gallery = document.querySelector('.case-gallery');
   const galleryContent = document.querySelector('.case-gallery-content');
   const layout = document.querySelector('.case-layout');
   const film = document.querySelector('[data-case-video]');
   const mobile = window.matchMedia('(max-width: 900px)');
   const updateLayout = () => {
-    document.body.style.setProperty('--case-header-height', `${header.getBoundingClientRect().height}px`);
     if (mobile.matches) {
       gallery.removeAttribute('tabindex');
       if (film.parentElement !== layout) layout.prepend(film);
@@ -15,7 +13,6 @@
       if (film.parentElement !== galleryContent) galleryContent.prepend(film);
     }
   };
-  new ResizeObserver(updateLayout).observe(header);
   mobile.addEventListener('change', updateLayout);
   updateLayout();
 
