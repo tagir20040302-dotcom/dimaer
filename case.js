@@ -3,14 +3,16 @@
   const galleryContent = document.querySelector('.case-gallery-content');
   const layout = document.querySelector('.case-layout');
   const film = document.querySelector('[data-case-video]');
+  const lead = document.querySelector('[data-case-lead], [data-case-video]');
+  const projectName = document.body.dataset.projectName || 'Fluento';
   const mobile = window.matchMedia('(max-width: 900px)');
   const updateLayout = () => {
     if (mobile.matches) {
       gallery.removeAttribute('tabindex');
-      if (film.parentElement !== layout) layout.prepend(film);
+      if (lead && lead.parentElement !== layout) layout.prepend(lead);
     } else {
       gallery.setAttribute('tabindex', '0');
-      if (film.parentElement !== galleryContent) galleryContent.prepend(film);
+      if (lead && lead.parentElement !== galleryContent) galleryContent.prepend(lead);
     }
   };
   mobile.addEventListener('change', updateLayout);
@@ -37,7 +39,8 @@
 
   const share = document.querySelector('.case-share');
   const shareUrl = new URL(document.querySelector('link[rel="canonical"]').href).href;
-  const shareText = 'Fluento — онлайн-платформа по изучению английского языка. Кейс Алсу Тагировой.';
+  const shareText = document.querySelector('meta[name="description"]').content;
+  const shareTitle = `${projectName} — кейс Алсу Тагировой`;
   const shareStatus = share.querySelector('[data-share-status]');
   const copyLabel = share.querySelector('[data-copy-share-label]');
   const urlLink = share.querySelector('[data-share-url]');
@@ -49,7 +52,7 @@
   const whatsappUrl = new URL('https://wa.me/');
   whatsappUrl.search = new URLSearchParams({text: `${shareText}\n${shareUrl}`});
   share.querySelector('[data-share-whatsapp]').href = whatsappUrl.href;
-  share.querySelector('[data-share-mail]').href = `mailto:?subject=${encodeURIComponent('Fluento — проект Алсу Тагировой')}&body=${encodeURIComponent(`${shareText}\n\n${shareUrl}`)}`;
+  share.querySelector('[data-share-mail]').href = `mailto:?subject=${encodeURIComponent(shareTitle)}&body=${encodeURIComponent(`${shareText}\n\n${shareUrl}`)}`;
 
   document.querySelector('[data-open-share]').addEventListener('click', () => {
     shareStatus.textContent = '';
@@ -79,7 +82,7 @@
   share.querySelector('[data-share-instagram]').addEventListener('click', async () => {
     if (navigator.share) {
       try {
-        await navigator.share({title: 'Fluento — кейс Алсу Тагировой', text: shareText, url: shareUrl});
+        await navigator.share({title: shareTitle, text: shareText, url: shareUrl});
       } catch (error) {
         if (error.name !== 'AbortError') await copyShareUrl();
       }
@@ -90,14 +93,14 @@
     await copied;
   });
 
-  if (film.dataset.videoSrc) {
+  if (film?.dataset.videoSrc) {
     const video = document.createElement('video');
     video.controls = true;
     video.playsInline = true;
     video.preload = 'none';
     video.poster = film.querySelector('img').src;
     video.src = film.dataset.videoSrc;
-    video.setAttribute('aria-label', 'Видеообзор сайта Fluento');
+    video.setAttribute('aria-label', `Видеообзор проекта ${projectName}`);
     film.replaceChildren(video);
   }
 
