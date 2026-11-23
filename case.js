@@ -38,6 +38,7 @@
   });
 
   const share = document.querySelector('.case-share');
+  share.tabIndex = -1;
   const shareUrl = new URL(document.querySelector('link[rel="canonical"]').href).href;
   const shareText = document.querySelector('meta[name="description"]').content;
   const shareTitle = `${projectName} — кейс Алсу Тагировой`;
@@ -58,6 +59,7 @@
     shareStatus.textContent = '';
     copyLabel.textContent = 'Копировать ссылку';
     share.showModal();
+    share.focus({preventScroll: true});
     share.scrollTop = 0;
   });
   share.querySelector('[data-close-share]').addEventListener('click', () => share.close());
