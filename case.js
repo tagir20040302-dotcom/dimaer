@@ -99,11 +99,16 @@
     const video = document.createElement('video');
     video.controls = true;
     video.playsInline = true;
-    video.preload = 'none';
+    video.muted = true;
+    video.defaultMuted = true;
+    video.loop = true;
+    video.autoplay = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    video.preload = video.autoplay ? 'metadata' : 'none';
     video.poster = film.querySelector('img').src;
     video.src = film.dataset.videoSrc;
     video.setAttribute('aria-label', `Видеообзор проекта ${projectName}`);
     film.replaceChildren(video);
+    if (video.autoplay) video.play().catch(() => { video.autoplay = false; });
   }
 
   const phone = document.querySelector('[data-copy-phone]');
