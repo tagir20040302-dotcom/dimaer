@@ -97,7 +97,8 @@
 .case-film video { display: block; width: 100%; height: 100%; object-fit: contain; border-radius: 6px; background: #111; }
 .case-video-preview { position: absolute; inset: 0; overflow: hidden; border-radius: 6px; background: #111; }
 .case-video-preview[hidden] { display: none; }
-.case-video-preview > img { width: 100%; height: 100%; object-fit: contain; }
+.case-video-preview > picture { display: block; width: 100%; height: 100%; }
+.case-video-preview > picture > img { width: 100%; height: 100%; object-fit: contain; }
 .case-video-preview-tools { position: absolute; right: 12px; bottom: 12px; display: flex; gap: 8px; }
 .case-video-preview-button { display: grid; place-items: center; width: 40px; height: 40px; padding: 10px; border: 0; border-radius: 4px; background: rgb(0 0 0 / 80%); cursor: pointer; }
 .case-video-preview-button:hover { background: #002bff; }

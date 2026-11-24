@@ -102,11 +102,9 @@
     let userPaused = false;
     let hasPlayed = false;
     let starting = false;
-    const preview = document.createElement('div');
-    preview.className = 'case-video-preview';
-    preview.hidden = true;
-    const previewImage = document.createElement('img');
-    previewImage.alt = '';
+    const preview = film.querySelector('.case-video-preview');
+    const previewImage = preview.querySelector('img');
+    const previewSource = preview.querySelector('source');
     const previewTools = document.createElement('div');
     previewTools.className = 'case-video-preview-tools';
     const previewButton = (icon, label, action) => {
@@ -123,9 +121,10 @@
       previewTools.append(button);
       return button;
     };
-    let previewPaused = false;
+    let previewPaused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const updatePreview = () => {
       previewImage.src = previewPaused ? video.poster : film.dataset.videoPreview;
+      previewSource.srcset = previewImage.src;
       const label = previewPaused ? 'Продолжить превью' : 'Приостановить превью';
       pausePreview.title = label;
       pausePreview.setAttribute('aria-label', label);
@@ -141,8 +140,8 @@
       userPaused = false;
       video.play().catch(showPreview);
     });
-    preview.append(previewImage, previewTools);
-    film.append(preview);
+    preview.append(previewTools);
+    updatePreview();
     const showPreview = () => {
       if (!film.dataset.videoPreview || !preview.hidden) return;
       previewPaused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -172,8 +171,13 @@
     video.addEventListener('play', () => { userPaused = false; });
     video.addEventListener('playing', () => {
       hasPlayed = true;
-      preview.hidden = true;
-      previewImage.removeAttribute('src');
+    });
+    video.addEventListener('timeupdate', () => {
+      if (!video.paused && video.currentTime > 0.1) {
+        preview.hidden = true;
+        previewImage.removeAttribute('src');
+        previewSource.removeAttribute('srcset');
+      }
     });
     video.addEventListener('error', showPreview);
     video.addEventListener('canplay', startVideo);
