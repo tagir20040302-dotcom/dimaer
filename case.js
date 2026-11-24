@@ -96,19 +96,45 @@
   });
 
   if (film?.dataset.videoSrc) {
-    const video = document.createElement('video');
-    video.controls = true;
-    video.playsInline = true;
+    const video = film.querySelector('video');
     video.muted = true;
     video.defaultMuted = true;
-    video.loop = true;
-    video.autoplay = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    video.preload = video.autoplay ? 'metadata' : 'none';
-    video.poster = film.querySelector('img').src;
-    video.src = film.dataset.videoSrc;
-    video.setAttribute('aria-label', `Видеообзор проекта ${projectName}`);
-    film.replaceChildren(video);
-    if (video.autoplay) video.play().catch(() => { video.autoplay = false; });
+    let userPaused = false;
+    let hasPlayed = false;
+    let starting = false;
+    const isVisible = () => {
+      const rect = video.getBoundingClientRect();
+      const clip = video.closest('.case-gallery')?.getBoundingClientRect();
+      const top = Math.max(0, clip?.top ?? 0);
+      const bottom = Math.min(window.innerHeight, clip?.bottom ?? window.innerHeight);
+      return !document.hidden && rect.bottom > top && rect.top < bottom
+        && rect.right > 0 && rect.left < window.innerWidth;
+    };
+    const startVideo = () => {
+      if (userPaused || starting || !video.paused || !isVisible()) return;
+      video.muted = true;
+      starting = true;
+      // Keep autoplay enabled when Safari postpones the first attempt.
+      video.play().catch(() => {}).finally(() => { starting = false; });
+    };
+    video.addEventListener('pause', () => {
+      if (hasPlayed && isVisible() && !video.ended) userPaused = true;
+    });
+    video.addEventListener('play', () => { userPaused = false; });
+    video.addEventListener('playing', () => { hasPlayed = true; });
+    video.addEventListener('canplay', startVideo);
+    video.addEventListener('loadeddata', startVideo);
+    const visibility = new IntersectionObserver(startVideo, { threshold: 0.1 });
+    visibility.observe(video);
+    document.addEventListener('visibilitychange', startVideo);
+    window.addEventListener('pageshow', startVideo);
+    document.addEventListener('pointerdown', event => {
+      if (!film.contains(event.target)) startVideo();
+    }, { passive: true });
+    document.addEventListener('keydown', event => {
+      if (!film.contains(event.target)) startVideo();
+    });
+    startVideo();
   }
 
   const phone = document.querySelector('[data-copy-phone]');
