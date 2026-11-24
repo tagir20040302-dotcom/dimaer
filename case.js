@@ -102,6 +102,53 @@
     let userPaused = false;
     let hasPlayed = false;
     let starting = false;
+    const preview = document.createElement('div');
+    preview.className = 'case-video-preview';
+    preview.hidden = true;
+    const previewImage = document.createElement('img');
+    previewImage.alt = '';
+    const previewTools = document.createElement('div');
+    previewTools.className = 'case-video-preview-tools';
+    const previewButton = (icon, label, action) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'case-video-preview-button';
+      button.title = label;
+      button.setAttribute('aria-label', label);
+      const image = document.createElement('img');
+      image.src = `../assets/icons/video-${icon}.svg`;
+      image.alt = '';
+      button.append(image);
+      button.addEventListener('click', action);
+      previewTools.append(button);
+      return button;
+    };
+    let previewPaused = false;
+    const updatePreview = () => {
+      previewImage.src = previewPaused ? video.poster : film.dataset.videoPreview;
+      const label = previewPaused ? 'Продолжить превью' : 'Приостановить превью';
+      pausePreview.title = label;
+      pausePreview.setAttribute('aria-label', label);
+      pausePreview.querySelector('img').src = `../assets/icons/video-${previewPaused ? 'play' : 'pause'}.svg`;
+    };
+    const pausePreview = previewButton('pause', 'Приостановить превью', () => {
+      previewPaused = !previewPaused;
+      userPaused = previewPaused;
+      updatePreview();
+    });
+    previewButton('play', 'Воспроизвести видео', () => {
+      if (video.error) video.load();
+      userPaused = false;
+      video.play().catch(showPreview);
+    });
+    preview.append(previewImage, previewTools);
+    film.append(preview);
+    const showPreview = () => {
+      if (!film.dataset.videoPreview || !preview.hidden) return;
+      previewPaused = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      updatePreview();
+      preview.hidden = false;
+    };
     const isVisible = () => {
       const rect = video.getBoundingClientRect();
       const clip = video.closest('.case-gallery')?.getBoundingClientRect();
@@ -115,13 +162,20 @@
       video.muted = true;
       starting = true;
       // Keep autoplay enabled when Safari postpones the first attempt.
-      video.play().catch(() => {}).finally(() => { starting = false; });
+      video.play().catch(error => {
+        if (error.name === 'NotAllowedError' || error.name === 'NotSupportedError') showPreview();
+      }).finally(() => { starting = false; });
     };
     video.addEventListener('pause', () => {
       if (hasPlayed && isVisible() && !video.ended) userPaused = true;
     });
     video.addEventListener('play', () => { userPaused = false; });
-    video.addEventListener('playing', () => { hasPlayed = true; });
+    video.addEventListener('playing', () => {
+      hasPlayed = true;
+      preview.hidden = true;
+      previewImage.removeAttribute('src');
+    });
+    video.addEventListener('error', showPreview);
     video.addEventListener('canplay', startVideo);
     video.addEventListener('loadeddata', startVideo);
     const visibility = new IntersectionObserver(startVideo, { threshold: 0.1 });
